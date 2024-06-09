@@ -1,0 +1,298 @@
+asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style type="text/css">
+        .style1
+    {
+        height: 340px;
+        width: 826px;
+    }
+    .style2
+    {
+        width: 132px;
+    }
+    .style3
+    {
+            width: 132px;
+            height: 35px;
+            color: #FF9900;
+        }
+    .style4
+    {
+        height: 35px;
+    }
+        .style5
+        {
+            width: 132px;
+            color: #FF9900;
+        }
+        .style6
+        {
+            width: 132px;
+            height: 38px;
+            color: #FF9900;
+        }
+        .style7
+        {
+            height: 38px;
+        }
+    </style>
+</asp:Content>
+  CREATE PASS :
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title></title>
+    <style type="text/css">
+        .newStyle15
+        {
+            background-color: #000080;
+            font-size: xx-large;
+            color: #FF0000;
+        }
+        .newStyle16
+        {
+            background-color: #FF9900;
+            color: #000080;
+        }
+        .newStyle17
+        {
+            font-size: x-large;
+        }
+        .style1
+        {
+            text-align: center;
+            height: 77px;
+            width: 434px;
+            margin-left: 232px;
+        }
+        .newStyle18
+        {
+            font-size: x-large;
+        }
+        .newStyle19
+        {
+            background-color: #FF9900;
+            font-size: x-large;
+            color: #000080;
+            font-family: "Franklin Gothic Book";
+        }
+        .newStyle20
+        {
+            font-size: x-large;
+            font-weight: bold;
+            color: #FF9900;
+            background-color: #000080;
+        }
+        .style2
+        {
+            background-color: #000080;
+            font-size: xx-large;
+            color: #FF0000;
+            font-weight: bold;
+        }
+        .newStyle21
+        {
+            font-size: xx-large;
+        }
+        .newStyle22
+        {
+            font-size: xx-large;
+            color: #FF9900;
+            text-decoration: blink;
+        }
+        .style3
+        {
+            font-size: xx-large;
+            color: #FF9900;
+            text-decoration: blink;
+        }
+        #form1
+        {
+            height: 416px;
+            width: 192px;
+        }
+    </style>
+</head>
+<body bgcolor="#000066" text="#ff0000">
+    <form id="form1" runat="server" style="width: auto; height: auto">
+    <div style="height: 77px; width: 463px; z-index: 1; left: 186px; top: 62px; position: absolute;"
+ <img src="pictures/right.png" 
+            
+            
+            
+  style="width: 312px; height: 211px; z-index: 1; left: 443px; top: 71px; position: absolute" /></div>
+      <p>
+      <asp:Login ID="Login1" runat="server" BackColor="Navy" BorderColor="Orange" 
+        BorderWidth="1px" Font-Names="microsoft" Font-Size="15pt" 
+        onauthenticate="Login1_Authenticate" 
+        
+        style="z-index: 0; left: 326px; top: 133px; position: absolute; height: 216px; width: 315px" 
+        CssClass="newStyle15" ForeColor="Orange" 
+        LoginButtonImageUrl="~/pictures/reverse.jpg" PasswordLabelText="Password" 
+        RememberMeText="Remember me next time" oninit="Login1_Init" 
+              onloggedin="Login1_LoggedIn" onloggingin="Login1_LoggingIn">
+        <TitleTextStyle BackColor="orange" Font-Bold="True" ForeColor="navy" />
+        
+    </asp:Login>
+    
+          <asp:LinkButton ID="LinkButton1" runat="server" ForeColor="#FF9900" 
+              onclick="LinkButton1_Click" 
+   style="z-index: 1; left: 406px; top: 356px; position: absolute; height: 22px; width: 176px">REGISTER HERE</asp:LinkButton>
+  </p>
+    
+    
+    
+        <div class="style1">
+    
+    <span class="style2">
+            </span><span 
+                class="style3">&nbsp; Online BusPass System</span></div>
+        
+       
+    
+    <img src="pictures/left.png" 
+        
+        
+        
+        style="width: 411px; height: 265px; margin-right: 0px; z-index: 1; left: -22px; top: 108px; position: absolute; right: 415px;" /><asp:ImageButton 
+        ID="admin" runat="server" ImageUrl="~/pictures/login_icon.png" 
+        onclick="ImageButton1_Click" 
+        
+        
+        style="z-index: 1; left: 439px; position: absolute; height: 53px; width: 78px; bottom: 45px;" />
+    </form>
+</body>
+</html>
+
+LOGIN.aspx :
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+
+
+public partial class Login : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+       if (!this.IsPostBack)  
+            ViewState["LoginErrors"] = 0;  
+
+
+    }
+    protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
+    {
+        if (YourValidationFunction(Login1.UserName, Login1.Password))
+        {
+            // e.Authenticated = true;  
+            Login1.Visible = false;
+        }
+        else
+        {
+            e.Authenticated = false;
+        }
+    }
+    protected void Login1_LoginError(object sender, EventArgs e)
+    {
+        if (ViewState["LoginErrors"] == null)
+            ViewState["LoginErrors"] = 0;
+        int ErrorCount = (int)ViewState["LoginErrors"] + 1;
+        ViewState["LoginErrors"] = ErrorCount;
+        if ((ErrorCount > 3) && (Login1.PasswordRecoveryUrl != string.Empty))
+            Response.Redirect(Login1.PasswordRecoveryUrl);
+    }
+    private bool YourValidationFunction(string UserName, string Password)
+    {
+        bool boolReturnValue = false;
+        string strConnection = "Data Source=BCASYSTEM065-PC;Initial Catalog=buspass;User ID=sa;Password=kbn;";
+        SqlConnection con = new SqlConnection(strConnection);
+        String SQLQuery = "SELECT UserName, Password FROM Login";
+        SqlCommand command = new SqlCommand(SQLQuery, con);
+        SqlDataReader Dr;
+        con.Open();
+        Dr = command.ExecuteReader();
+        while (Dr.Read())
+        {
+            if ((UserName == Dr["UserName"].ToString()) & (Password == Dr["Password"].ToString()))
+            {
+                boolReturnValue = true;
+            }
+            Dr.Close();
+            return boolReturnValue;
+        }
+        return boolReturnValue;
+    }
+}  
+       
+
+Firstpage.aspx
+
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+
+
+public partial class firstpage : System.Web.UI.Page
+{
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!this.IsPostBack)
+            ViewState["LoginErrors"] = 0;  
+    }
+    protected void Login1_Authenticate(object sender, AuthenticateEventArgs e)
+    {
+
+
+        if (YourValidationFunction(Login1.UserName, Login1.Password))
+        {
+            // e.Authenticated = true;  
+            Login1.Visible = false;
+        }
+        else
+        {
+            e.Authenticated = false;
+        }
+        }
+    protected void Login1_LoginError(object sender, EventArgs e)
+    {
+        if (ViewState["LoginErrors"] == null)
+            ViewState["LoginErrors"] = 0;
+        int ErrorCount = (int)ViewState["LoginErrors"] + 1;
+        ViewState["LoginErrors"] = ErrorCount;
+        if ((ErrorCount > 3) && (Login1.PasswordRecoveryUrl != string.Empty))
+            Response.Redirect(Login1.PasswordRecoveryUrl);
+    }
+    private bool YourValidationFunction(string UserName, string Password)
+    {
+        bool boolReturnValue = false;
+        string strConnection = "Data Source=BCASYSTEM065-PC;Initial Catalog=buspass;User ID=sa;Password=kbn;";
+        SqlConnection con = new SqlConnection(strConnection);
+        String SQLQuery = "SELECT UserName, Password FROM Login";
+        SqlCommand command = new SqlCommand(SQLQuery, con);
+        SqlDataReader Dr;
+        con.Open();
+        Dr = command.ExecuteReader();
+        while (Dr.Read())
+        {
+            if ((UserName == Dr["UserName"].ToString()) & (Password == Dr["Password"].ToString()))
+            {
+                boolReturnValue = true;
+                Response.Redirect("first.master");
+            }
+            Dr.Close();
+            return boolReturnValue;
+        }
+        return boolReturnValue;
+    }
+    protected void LinkButton1_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("Register.aspx");
+    }
+} 
+   
